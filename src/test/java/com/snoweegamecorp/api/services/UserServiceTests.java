@@ -29,7 +29,7 @@ public class UserServiceTests {
         roles.add("USERS");
         User user = new User(
                 4,
-                "Tester",
+                "Testers",
                 "tester4@gmail.com",
                 "123456",
                 "",
