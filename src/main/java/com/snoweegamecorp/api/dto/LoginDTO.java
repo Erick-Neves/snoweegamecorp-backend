@@ -1,11 +1,11 @@
 package com.snoweegamecorp.api.dto;
 
-public class Login {
+public class LoginDTO {
     private String username;
     private String password;
-    public Login() {
+    public LoginDTO() {
     }
-    public Login(String username, String password) {
+    public LoginDTO(String username, String password) {
         this.username = username;
         this.password = password;
     }

@@ -14,14 +14,14 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @ContextConfiguration(classes = {Application.class})
 @ActiveProfiles("dev")
-@SpringBootTest(classes = {UserRepositoryTests.class})
+@SpringBootTest(classes = {UserRepositoryTests.class, UserService.class})
 class ApplicationTests {
 	@Autowired
 	private ApplicationContext context;
 	@Autowired
-	private UserRepository repository;
+	private UserRepository userRepository;
 	@Autowired
-	private UserService service;
+	private UserService userService;
 	@Test
 	void contextLoads() {
 	}

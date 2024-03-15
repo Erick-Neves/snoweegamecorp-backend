@@ -1,6 +1,6 @@
 package com.snoweegamecorp.api.dto;
 
-public class Session {
+public class SessionDTO {
     private String login;
     private String token;
     public String getLogin() {

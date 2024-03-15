@@ -1,7 +1,7 @@
 package com.snoweegamecorp.api.controller;
 
-import com.snoweegamecorp.api.dto.Login;
-import com.snoweegamecorp.api.dto.Session;
+import com.snoweegamecorp.api.dto.LoginDTO;
+import com.snoweegamecorp.api.dto.SessionDTO;
 import com.snoweegamecorp.api.model.User;
 import com.snoweegamecorp.api.repository.UserRepository;
 import com.snoweegamecorp.api.security.SecurityConfig;
@@ -24,15 +24,15 @@ public class LoginController {
     @Autowired
     private UserRepository repository;
     @PostMapping("/login")
-    public Session logar(@RequestBody Login login){
-        User user = repository.findByUsername(login.getUsername());
+    public SessionDTO logar(@RequestBody LoginDTO loginDTO){
+        User user = repository.findByUsername(loginDTO.getUsername());
         if(user!=null) {
-            boolean passwordOk =  encoder.matches(login.getPassword(), user.getPassword());
+            boolean passwordOk =  encoder.matches(loginDTO.getPassword(), user.getPassword());
             if (!passwordOk) {
-                throw new RuntimeException("Senha inválida para o login: " + login.getUsername());
+                throw new RuntimeException("Senha inválida para o login: " + loginDTO.getUsername());
             }
             //Estamos enviando um objeto Sessão para retornar mais informações do usuário
-            Session sessao = new Session();
+            SessionDTO sessao = new SessionDTO();
             sessao.setLogin(user.getUsername());
 
             JWTObject jwtObject = new JWTObject();
