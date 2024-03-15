@@ -11,6 +11,19 @@ server:
     key-store: snoweeapi.p12
     key-store-password: ${env.keystore.password}
 
+management:
+  endpoints:
+    endpoint-by-default: false
+    web:
+      exposure:
+        include: 'health,prometheus'
+    endpoint:
+      health:
+        enabled: true
+        show-details: true
+      prometheus:
+        enabled: true
+        show-details: true
 
 spring:
   datasource:
@@ -31,3 +44,11 @@ spring:
     console:
       enabled: true
       path: /h2-console
+
+
+env.user.admin.username: ${USER_ADMIN_USERNAME}
+env.user.admin.password: ${USER_ADMIN_PASSWORD}
+env.user.tester.username: ${USER_TESTER_USERNAME}
+env.user.tester.password: ${USER_TESTER_PASSWORD}
+env.user.guest.username: ${USER_GUEST_USERNAME}
+env.user.guest.password: ${USER_GUEST_PASSWORD}

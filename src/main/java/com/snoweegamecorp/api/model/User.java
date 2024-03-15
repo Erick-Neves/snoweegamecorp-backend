@@ -1,6 +1,7 @@
 package com.snoweegamecorp.api.model;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +26,18 @@ public class User {
     @CollectionTable(name = "tb_user_roles", joinColumns = @JoinColumn(name = "user_id"))
     @Column(name = "role_id")
     private List<String> roles = new ArrayList<>();
+
+    public User() {
+    }
+
+    public User(Integer id, String name, String username, String password, String profilePicUrl, List<String> roles) {
+        this.id = id;
+        this.name = name;
+        this.username = username;
+        this.password = password;
+        this.profilePicUrl = profilePicUrl;
+        this.roles = roles;
+    }
 
     public Integer getId() {
         return id;

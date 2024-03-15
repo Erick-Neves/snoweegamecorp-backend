@@ -3,6 +3,20 @@
 app:
   message: This is the property file to the ${spring.application.name} specific for DEV environment
 
+management:
+  endpoints:
+    endpoint-by-default: false
+    web:
+      exposure:
+        include: 'health,prometheus'
+    endpoint:
+      health:
+        enabled: true
+        show-details: true
+      prometheus:
+        enabled: true
+        show-details: true
+
 spring:
   datasource:
     url: jdbc:h2:mem:dbsnowee;DB_CLOSE_ON_EXIT=FALSE
@@ -19,3 +33,10 @@ spring:
     console:
       enabled: true
       path: /h2-console
+
+env.user.admin.username: "admin@test.com"
+env.user.admin.password: "123456789"
+env.user.tester.username: "tester@test.com"
+env.user.tester.password: "123456789"
+env.user.guest.username: "guest@test.com"
+env.user.guest.password: "123456789"
