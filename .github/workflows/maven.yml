@@ -23,7 +23,7 @@ jobs:
       run: mvn -B package --file pom.xml
     - name: Update index.html
       run: |
-        echo "<h1>Atualização automática do GitHub Actions</h1>"
+        echo "<h1>Atualização automática do GitHub Actions</h1>" > index.html
         
     - name: Commit and push changes
       run: |
