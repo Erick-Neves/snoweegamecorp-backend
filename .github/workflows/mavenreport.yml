@@ -44,12 +44,13 @@ jobs:
         run: mvn clean test surefire-report:report
       - name: Update index.html
         run: |
-          mv target/surefire-reports/surefire-report.html docs/
+          rm -rf docs/index.html
+          mv target/surefire-reports/surefire-report.html docs/index.html
       - name: Commit and push changes
         run: |
           git config --global user.email "actions@users.noreply.github.com"
           git config --global user.name "GitHub Actions"
-          git add docs/surefire-report.html
+          git add docs/index.html
           git commit -m "Update index.html via GitHub Actions"
           git push
 
@@ -67,7 +68,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: './docs/surefire-report.html'
+          path: './docs/'
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
