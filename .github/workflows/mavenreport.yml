@@ -44,7 +44,7 @@ jobs:
         run: mvn clean test surefire-report:report
       - name: Update index.html
         run: |
-          mv target/surefire-reports/surefire-report.html docs/index.html
+          mv target/surefire-reports/surefire-report.html docs/
       - name: Commit and push changes
         run: |
           git config --global user.email "actions@users.noreply.github.com"
