@@ -1,12 +1,19 @@
 package com.snoweegamecorp.api.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Builder
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name="tb_users")
 public class User {
 
@@ -16,7 +23,7 @@ public class User {
     private Integer id;
     @Column(length = 50, nullable = false)
     private String name;
-    @Column(length = 50, nullable = false)
+    @Column(length = 50, nullable = false, unique = true)
     private String username;
     @Column(length = 100, nullable = false)
     private String password;
@@ -27,7 +34,16 @@ public class User {
     @Column(name = "role_id")
     private List<String> roles = new ArrayList<>();
 
-    public User() {
+    public User(User user) {
+        this.id = user.getId();
+        this.name = user.getName();
+        this.username = user.getUsername();
+        this.password = user.getPassword();
+        this.profilePicUrl = user.getProfilePicUrl();
+        this.roles = user.getRoles();
+    }
+
+    /*public User() {
     }
 
     public User(Integer id, String name, String username, String password, String profilePicUrl, List<String> roles) {
@@ -37,7 +53,7 @@ public class User {
         this.password = password;
         this.profilePicUrl = profilePicUrl;
         this.roles = roles;
-    }
+    }*/
 
     public Integer getId() {
         return id;

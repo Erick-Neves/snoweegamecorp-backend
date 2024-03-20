@@ -23,13 +23,13 @@ public class UserService {
         user.setPassword(
                 passwordEncoder().
                         encode(pass));
-        this.userRepository.save(user);
+        userRepository.save(user);
         return new UserDTO(user);
     }
     public List<UserDTO> findAllUsers(){
-        List<User> users = this.userRepository.findAll();
+        List<User> users = userRepository.findAll();
         List<UserDTO> userDTOS = new ArrayList<>();
-        for (User user: users){
+        for (User user : users) {
             UserDTO userDTOToAdd = new UserDTO(user);
             userDTOS.add(userDTOToAdd);
         }

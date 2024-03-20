@@ -1,13 +1,13 @@
 package com.snoweegamecorp.api.repository;
 
 import com.snoweegamecorp.api.model.User;
-import org.junit.jupiter.api.Assertions;
+import com.snoweegamecorp.api.utils.TestUtils;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.jdbc.EmbeddedDatabaseConnection;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,106 +16,54 @@ import java.util.Optional;
 public class UserRepositoryTests {
     @Autowired
     private UserRepository repository;
+    private User user1;
+    private User user2;
     @Test
-    public void SaveUser(){
-        List<String> roles = new ArrayList<>();
-        roles.add("USERS");
-        User user = new User(
-                1,
-                "Tester",
-                "tester1@gmail.com",
-                "123456",
-                "",
-                roles );
-        User savedUser = repository.save(user);
-        Assertions.assertNotNull(savedUser);
+    public void SaveUser_ReturnUser(){
+        user1 = TestUtils.instantiateNewUser(1);
+        User savedUser = repository.save(user1);
+        Assertions.assertThat(savedUser).isNotNull();
     }
     @Test
-    public void FindUserByUsername() throws InterruptedException {
-        List<String> roles = new ArrayList<>();
-        roles.add("USERS");
-        User user = new User(
-                2,
-                "Tester",
-                "tester2@gmail.com",
-                "123456",
-                "",
-                roles );
-        repository.save(user);
-        User foundUser = repository.findByUsername(user.getUsername());
-        Assertions.assertNotNull(foundUser);
+    public void FindUserByUsername_ReturnOneUser(){
+        user1 = TestUtils.instantiateNewUser(2);
+        User userToFind = repository.save(user1);
+        User foundUser = repository.findByUsername(userToFind.getUsername());
+        Assertions.assertThat(foundUser).isNotNull();
     }
     @Test
-    public void FindUserById(){
-        List<String> roles = new ArrayList<>();
-        roles.add("USERS");
-        User user = new User(
-                3,
-                "Tester",
-                "tester3@gmail.com",
-                "123456",
-                "",
-                roles );
-        repository.save(user);
-        User foundUser = repository.findById(3).get();
-        Assertions.assertNotNull(foundUser);
+    public void FindUserById_ReturnOneUser(){
+        user1 = TestUtils.instantiateNewUser(3);
+        User userToFind = repository.save(user1);
+        User foundUser = repository.findById(userToFind.getId()).get();
+        Assertions.assertThat(foundUser).isNotNull();
     }
     @Test
-    public void FindAllUsers(){
-        List<String> roles = new ArrayList<>();
-        roles.add("USERS");
-        User user1 = new User(
-                4,
-                "Tester",
-                "tester4@gmail.com",
-                "123456",
-                "",
-                roles );
-        User user2 = new User(
-                5,
-                "Tester",
-                "tester5@gmail.com",
-                "123456",
-                "",
-                roles );
+    public void FindAllUsers_ReturnListUsers(){
+        user1 = TestUtils.instantiateNewUser(4);
+        user2 = TestUtils.instantiateNewUser(5);
         repository.save(user1);
         repository.save(user2);
         List<User> users = repository.findAll();
-        Assertions.assertTrue(users.stream().count() == 2);
+        Assertions.assertThat(users.stream().count() == 2);
     }
     @Test
-    public void UpdateUser() {
-        List<String> roles = new ArrayList<>();
-        roles.add("USERS");
-        User user = new User(
-                6,
-                "Tester",
-                "tester6@gmail.com",
-                "123456",
-                "",
-                roles );
-        repository.save(user);
-        System.out.println(repository.save(user));
-        User foundUser = repository.findById(6).get();
-        foundUser.setName("Another Tester");
-        foundUser.setUsername("anothertester@gmail.com");
-        User updatedUser = repository.save(foundUser);
-        Assertions.assertEquals(updatedUser.getName(), "Another Tester");
+    public void UpdateUser_ReturnUpdatedUser() {
+        user1 = TestUtils.instantiateNewUser(6);
+        User user = repository.save(user1);
+        User userToUpdate = repository.findById(user.getId()).get();
+        userToUpdate.setName("Another Tester");
+        userToUpdate.setUsername("anothertester@gmail.com");
+        User updatedUser = repository.save(userToUpdate);
+        Assertions.assertThat(updatedUser.getName().equals("Another Tester"));
     }
     @Test
-    public void DeleteUser(){
-        List<String> roles = new ArrayList<>();
-        roles.add("USERS");
-        User user = new User(
-                1,
-                "Tester",
-                "tester@gmail.com",
-                "123456",
-                "",
-                roles );
-        repository.save(user);
-        repository.deleteById(user.getId());
-        Optional<User> foundUser = repository.findById(1);
-        Assertions.assertTrue(foundUser.isEmpty());
+    public void DeleteUser_ReturnOptional(){
+        user1 = TestUtils.instantiateNewUser(6);
+        User userToDelete = repository.save(user1);
+        repository.save(userToDelete);
+        repository.deleteById(userToDelete.getId());
+        Optional<User> foundUser = repository.findById(userToDelete.getId());
+        Assertions.assertThat(foundUser.isEmpty());
     }
 }

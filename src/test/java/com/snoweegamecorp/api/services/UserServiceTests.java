@@ -4,11 +4,15 @@ import com.snoweegamecorp.api.dto.UserDTO;
 import com.snoweegamecorp.api.model.User;
 import com.snoweegamecorp.api.repository.UserRepository;
 import com.snoweegamecorp.api.service.UserService;
+import com.snoweegamecorp.api.utils.TestUtils;
+import com.sun.source.tree.ModuleTree;
 import org.assertj.core.api.Assertions;
+import org.h2.command.dml.MergeUsing;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -23,41 +27,30 @@ public class UserServiceTests {
     private UserService userService;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    private User user1;
+    private User user2;
+    private UserDTO userDTO1;
+    private UserDTO userDTO2;
     @Test
-    public void UserService_CreateUser_ReturnNewUserDTO(){
-        List<String> roles = new ArrayList<>();
-        roles.add("USERS");
-        User user = new User(
-                4,
-                "Testers",
-                "tester4@gmail.com",
-                "123456",
-                "",
-                roles );
-        UserDTO userDTO = userService.createUser(user);
-        Assertions.assertThat(userDTO).isNotNull();
+    public void CreateUser_ReturnNewUserDTO(){
+        user1 = TestUtils.instantiateNewUser(1);
+        Mockito.when(userRepository.save(user1)).thenReturn(user1);
+        UserDTO userDTO = userService.createUser(user1);
+        Assertions.assertThat(userDTO.getName().equals("Tester") && userDTO.getPassword() == null);
     }
     @Test
-    public void UserService_FindAllUsers_ReturnListUsersDTO(){
-        List<String> roles = new ArrayList<>();
-        roles.add("USERS");
-        User user1 = new User(
-                5,
-                "Tester",
-                "tester4@gmail.com",
-                "123456",
-                "",
-                roles );
+    public void FindAllUsers_ReturnListUsersDTO(){
+        user1 = TestUtils.instantiateNewUser(1);
+        user2 = TestUtils.instantiateNewUser(2);
+        List<User> userList = new ArrayList<>();
+        userList.add(user1);
+        userList.add(user2);
         userService.createUser(user1);
-        User user2 = new User(
-                5,
-                "Tester",
-                "tester5@gmail.com",
-                "123456",
-                "",
-                roles );
         userService.createUser(user2);
-        List<UserDTO> usersDTO = userService.findAllUsers();
-        Assertions.assertThat(usersDTO.stream().count() == 2);
+        Mockito.when(userRepository.findAll()).thenReturn(userList);
+        List<UserDTO> userDTOS = userService.findAllUsers();
+        Assertions.assertThat(userDTOS.get(0).getUsername().equals("tester1@gmail.com") &&
+                userDTOS.get(0).getPassword() == null &&
+                userDTOS.stream().count() == 2);
     }
 }
