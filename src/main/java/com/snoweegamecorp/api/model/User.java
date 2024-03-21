@@ -1,13 +1,8 @@
 package com.snoweegamecorp.api.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,21 +13,17 @@ import java.util.List;
 @NoArgsConstructor
 @Table(name="tb_users")
 public class User {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_user")
     private Integer id;
-    @Column
-    @NotBlank(message = "Name required")
-    @Size(min = 3, max = 60, message = "Nome deve ter entre 3 a 60 caracteres")
+
+    @Column(nullable = false)
+    @Size(min = 4, max = 50, message = "Name length must be between 4 and 50 characters!")
     private String name;
-    @Column(unique = true)
-    @Email(message = "Already registered email")
-    @NotBlank(message = "Email required")
+    @Column(unique = true, length = 50, nullable = false)
     private String username;
     @Column(length = 100, nullable = false)
-    @NotBlank(message = "Password required")
     private String password;
     @Column
     private String profilePicUrl;

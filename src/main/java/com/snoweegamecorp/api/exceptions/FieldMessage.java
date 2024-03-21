@@ -1,7 +1,6 @@
 package com.snoweegamecorp.api.exceptions;
 
 public class FieldMessage {
-    private static final long serialVerionUID = 1L;
     private String fieldName;
     private String message;
     public FieldMessage(){
