@@ -45,13 +45,13 @@ public class ExceptionHandler {
         err.setTimeStamp(Instant.now());
         err.setStatus(status.value());
         err.setError("Validation exception");
-        err.setMessage(e.getMessage());
+        err.setMessage("Email already registered!");
         err.setPath(request.getRequestURI());
         return ResponseEntity.status(status).body(err);
     }
     @org.springframework.web.bind.annotation.ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<ValidationError> constrain(ConstraintViolationException e, HttpServletRequest request){
-        HttpStatus status = HttpStatus.UNPROCESSABLE_ENTITY;
+        HttpStatus status = HttpStatus.BAD_REQUEST;
         ValidationError err = new ValidationError();
         Set<ConstraintViolation<?>> constraintViolations = e.getConstraintViolations();
         Set<String> messages = new HashSet<>(constraintViolations.size());

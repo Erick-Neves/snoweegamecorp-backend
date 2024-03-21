@@ -34,13 +34,13 @@ public class WebSecurityConfig {
     };
     private static final String[] PUBLIC_WHITELIST = {
             "/login",
-            "/api/users/create"
+            "/users/create"
     };
     private static final String[] USERS_WHITELIST = {
-            "/users"
     };
     private static final String[] MANAGERS_WHITELIST = {
-            "/managers"
+            "/users/*",
+            "/managers/*"
     };
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {

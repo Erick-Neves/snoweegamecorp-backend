@@ -9,7 +9,7 @@ public class WellcomeController {
     public String welcome(){
         return "Welcome to My Spring Boot Web API";
     }
-    @GetMapping("/users")
+    @GetMapping("/userss")
     public String users() {
         return "Authorized user";
     }
