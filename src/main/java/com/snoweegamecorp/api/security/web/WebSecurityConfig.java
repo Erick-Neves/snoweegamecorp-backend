@@ -23,7 +23,6 @@ public class WebSecurityConfig {
     public BCryptPasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
     }
-
     private static final String[] SWAGGER_WHITELIST = {
             "/v2/api-docs",
             "/swagger-resources",
@@ -33,28 +32,32 @@ public class WebSecurityConfig {
             "/swagger-ui.html",
             "/webjars/**"
     };
-
+    private static final String[] PUBLIC_WHITELIST = {
+            "/login",
+            "/api/users/create"
+    };
+    private static final String[] USERS_WHITELIST = {
+            "/users"
+    };
+    private static final String[] MANAGERS_WHITELIST = {
+            "/managers"
+    };
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-
         http.headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable));
-
         http.csrf(AbstractHttpConfigurer::disable)
                 .addFilterAfter(new JWTFilter(), UsernamePasswordAuthenticationFilter.class)
                 .authorizeRequests()
                 .requestMatchers(SWAGGER_WHITELIST).permitAll()
                 .requestMatchers("/h2-console/**").permitAll()
-                .requestMatchers(HttpMethod.POST,"/login").permitAll()
-                .requestMatchers(HttpMethod.POST,"/users").permitAll()
-                .requestMatchers(HttpMethod.GET,"/users").hasAnyRole("USERS","MANAGERS")
-                .requestMatchers("/managers").hasAnyRole("MANAGERS")
+                .requestMatchers(HttpMethod.POST,PUBLIC_WHITELIST).permitAll()
+                .requestMatchers(HttpMethod.GET,USERS_WHITELIST).hasAnyRole("USERS","MANAGERS")
+                .requestMatchers(MANAGERS_WHITELIST).hasAnyRole("MANAGERS")
                 .anyRequest().authenticated()
                 .and()
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-
         return http.build();
     }
-
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
         return (web) -> web.ignoring().requestMatchers("/images/**", "/js/**", "/webjars/**", "/h2-console/*", "/actuator/*");

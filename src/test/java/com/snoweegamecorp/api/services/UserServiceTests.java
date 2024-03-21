@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
+import static org.mockito.Mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -34,7 +34,7 @@ public class UserServiceTests {
     @Test
     public void CreateUser_ReturnNewUserDTO(){
         user1 = TestUtils.instantiateNewUser(1);
-        Mockito.when(userRepository.save(user1)).thenReturn(user1);
+        when(userRepository.save(user1)).thenReturn(user1);
         UserDTO userDTO = userService.createUser(user1);
         Assertions.assertThat(userDTO.getName().equals("Tester") && userDTO.getPassword() == null);
     }
@@ -47,7 +47,7 @@ public class UserServiceTests {
         userList.add(user2);
         userService.createUser(user1);
         userService.createUser(user2);
-        Mockito.when(userRepository.findAll()).thenReturn(userList);
+        when(userRepository.findAll()).thenReturn(userList);
         List<UserDTO> userDTOS = userService.findAllUsers();
         Assertions.assertThat(userDTOS.get(0).getUsername().equals("tester1@gmail.com") &&
                 userDTOS.get(0).getPassword() == null &&
