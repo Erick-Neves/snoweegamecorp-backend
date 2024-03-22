@@ -42,4 +42,9 @@ public class UserController {
         UserDTO updatedUser = service.updateUser(user);
         return ResponseEntity.status(202).body(updatedUser);
     }
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<UserDTO> deleteUserById(@PathVariable Integer id){
+        service.deleteUser(id);
+        return ResponseEntity.noContent().build();
+    }
 }

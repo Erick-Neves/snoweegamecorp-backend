@@ -13,7 +13,7 @@ public class TestUtils {
                 .name("Tester")
                 .username("tester"+id+"@gmail.com")
                 .password("123456")
-                .profilePicUrl("")
+                .profilePicUrl("https://i.imgur.com/LGGL7VJ.png")
                 .roles(roles)
                 .build();
         return user;
