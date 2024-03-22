@@ -19,7 +19,18 @@ import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * JWTFilter class to handle JWT token authentication and authorization.
+ */
 public class JWTFilter extends OncePerRequestFilter {
+    /**
+     * Perform the JWT token authentication and authorization.
+     * @param request the HTTP servlet request
+     * @param response the HTTP servlet response
+     * @param filterChain the filter chain
+     * @throws ServletException if a servlet exception occurs
+     * @throws IOException if an input or output exception occurs
+     */
     @Override
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
@@ -46,6 +57,11 @@ public class JWTFilter extends OncePerRequestFilter {
             response.setStatus(HttpStatus.FORBIDDEN.value());
         }
     }
+    /**
+     * Get the authorities based on the roles.
+     * @param roles the roles
+     * @return the list of simple granted authorities
+     */
     private List<SimpleGrantedAuthority> authorities(List<String> roles){
         return roles.stream().map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());

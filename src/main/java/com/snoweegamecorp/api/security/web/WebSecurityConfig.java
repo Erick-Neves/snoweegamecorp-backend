@@ -15,14 +15,22 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+/**
+ * Configuration class for Web Security.
+ */
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig {
+    /**
+     * Configure BCrypt password encoder.
+     * @return BCryptPasswordEncoder instance
+     */
     @Bean
     public BCryptPasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
     }
+    // Whitelists for different endpoints
     private static final String[] SWAGGER_WHITELIST = {
             "/v2/api-docs",
             "/swagger-resources",
@@ -42,6 +50,12 @@ public class WebSecurityConfig {
             "/users/*",
             "/managers/*"
     };
+    /**
+     * Configures the security filter chain.
+     * @param http HttpSecurity object
+     * @return SecurityFilterChain instance
+     * @throws Exception if an error occurs
+     */
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable));
@@ -58,6 +72,10 @@ public class WebSecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         return http.build();
     }
+    /**
+     * Customizes web security by ignoring specific requests.
+     * @return WebSecurityCustomizer instance
+     */
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
         return (web) -> web.ignoring().requestMatchers("/images/**", "/js/**", "/webjars/**", "/h2-console/*", "/actuator/*");
