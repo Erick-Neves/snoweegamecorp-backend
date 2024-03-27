@@ -1,7 +1,15 @@
 package com.snoweegamecorp.api.exceptions;
 
-public class ResourceNotFoundException extends RuntimeException{
-    public ResourceNotFoundException(String msg){
+/**
+ * Exception thrown when a resource is not found.
+ */
+public class ResourceNotFoundException extends RuntimeException {
+    /**
+     * Constructs a new ResourceNotFoundException with the specified detail message.
+     *
+     * @param msg the detail message
+     */
+    public ResourceNotFoundException(String msg) {
         super(msg);
     }
 }

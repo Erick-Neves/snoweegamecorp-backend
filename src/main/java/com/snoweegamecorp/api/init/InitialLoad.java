@@ -29,9 +29,14 @@ public class InitialLoad implements CommandLineRunner {
     private String guestPassword;
     public String profilePicAdmin = "https://i.imgur.com/CWf3Y4j.jpg";
     public String profilePicUsers = "https://i.imgur.com/LGGL7VJ.png";
+    /**
+     * This method runs during application startup and loads initial users if they do not exist.
+     * It creates an admin user, a tester user, and a guest user with specific roles and profile pictures.
+     */
     @Transactional
     @Override
     public void run(String... args) throws Exception {
+        // Create or update admin user
         User user = repository.findByUsername(adminUsername);
         if(user==null){
             user = new User();
@@ -43,6 +48,7 @@ public class InitialLoad implements CommandLineRunner {
             user.setProfilePicUrl(profilePicAdmin);
             service.createUser(user);
         }
+        // Create or update tester user
         user = repository.findByUsername(testerUsername);
         if(user==null){
             user = new User();
@@ -54,6 +60,7 @@ public class InitialLoad implements CommandLineRunner {
             user.setProfilePicUrl(profilePicUsers);
             service.createUser(user);
         }
+        // Create or update guest user
         user = repository.findByUsername(guestUsername);
         if(user==null){
             user = new User();

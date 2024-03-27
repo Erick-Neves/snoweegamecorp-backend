@@ -27,6 +27,9 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Test class for UserController
+ */
 @WebMvcTest(controllers = UserController.class)
 @AutoConfigureMockMvc(addFilters = false)
 @ExtendWith(MockitoExtension.class)
@@ -41,11 +44,16 @@ public class UserControllerTests {
     private User user;
     @BeforeEach
     public void init(){
+        // Initialize user and userDTO objects
         user = TestUtils.instantiateNewUser(1);
         userDTO = new UserDTO(user);
         userDTO.setCreatedAt(LocalDateTime.now());
         userDTO.setUpdatedAt(LocalDateTime.now());
     }
+    /**
+     * Test for creating a user
+     * @throws Exception
+     */
     @Test
     public void UserController_CreateUser_ReturnCreated_UserDTO() throws Exception {
         when(userService.createUser(user)).thenReturn(userDTO);
@@ -57,6 +65,10 @@ public class UserControllerTests {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.name", CoreMatchers.is(user.getName())))
                 .andDo(MockMvcResultHandlers.print());
     }
+    /**
+     * Test for getting all users
+     * @throws Exception
+     */
     @Test
     public void UserController_GetAllUsers_ReturnOk_ListUserDTO() throws Exception {
         List<UserDTO> userDTOList = new ArrayList<>();
@@ -69,6 +81,10 @@ public class UserControllerTests {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.[0].username", CoreMatchers.is(user.getUsername())))
                 .andDo(MockMvcResultHandlers.print());
     }
+    /**
+     * Test for getting a user by ID
+     * @throws Exception
+     */
     @Test
     public void UserController_GetUsersById_ReturnOk_UserDTO() throws Exception {
         when(userService.findUserById(user.getId())).thenReturn(userDTO);
@@ -78,6 +94,10 @@ public class UserControllerTests {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.id", CoreMatchers.is(user.getId())))
                 .andDo(MockMvcResultHandlers.print());
     }
+    /**
+     * Test for getting a user by username
+     * @throws Exception
+     */
     @Test
     public void UserController_GetUsersByUsername_ReturnOk_UserDTO() throws Exception {
         when(userService.findUserByUsername(user.getUsername())).thenReturn(userDTO);
@@ -87,17 +107,31 @@ public class UserControllerTests {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.id", CoreMatchers.is(user.getId())))
                 .andDo(MockMvcResultHandlers.print());
     }
+    /**
+     * Test to update user information in UserController
+     *
+     * @throws Exception
+     */
     @Test
     public void UserController_UpdateUsers_ReturnAccepted_UserDTO() throws Exception {
+        // Set user information
         user.setName("Taster");
         user.setProfilePicUrl("www.azeitona.com");
+
+        // Set userDTO information
         userDTO.setName("Taster");
         userDTO.setProfilePicUrl("www.azeitona.com");
+
+        // Mock the userService update method to return userDTO
         when(userService.updateUser(user)).thenReturn(userDTO);
+
+        // Perform a PUT request to update user information
         ResultActions response = mockMvc.perform(
                 put("/users/update")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(user)));
+
+        // Verify the response status is accepted and check returned user information
         response.andExpect(MockMvcResultMatchers.status().isAccepted())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.name", CoreMatchers.is(user.getName())))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.profilePicUrl", CoreMatchers.is(user.getProfilePicUrl())))
@@ -105,9 +139,13 @@ public class UserControllerTests {
     }
     @Test
     public void UserController_DeleteUsersById_ReturnNoContent() throws Exception {
+        // Stub the delete user method to do nothing
         doNothing().when(userService).deleteUser(user.getId());
-        ResultActions response = mockMvc.perform(
-                delete("/users/delete/"+user.getId()));
+
+        // Perform a delete request to delete the user by id
+        ResultActions response = mockMvc.perform(delete("/users/delete/"+user.getId()));
+
+        // Assert that the status is no content and print the result
         response.andExpect(MockMvcResultMatchers.status().isNoContent())
                 .andDo(MockMvcResultHandlers.print());
     }

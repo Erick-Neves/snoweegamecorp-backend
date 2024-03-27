@@ -14,6 +14,9 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+/**
+ * Global exception handler for handling specific exceptions and returning appropriate responses.
+ */
 @ControllerAdvice
 public class ExceptionHandler {
     @org.springframework.web.bind.annotation.ExceptionHandler(ResourceNotFoundException.class)

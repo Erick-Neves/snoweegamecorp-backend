@@ -1,5 +1,6 @@
 package com.snoweegamecorp.api.utils;
 
+import com.snoweegamecorp.api.dto.LoginDTO;
 import com.snoweegamecorp.api.model.User;
 import java.util.ArrayList;
 import java.util.List;
