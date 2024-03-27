@@ -45,6 +45,7 @@ jobs:
       - name: Update index.html
         run: |
           rm -rf docs/index.html
+          rm -rf docs/index.html
           mv target/surefire-reports/surefire-report.html docs/index.html
       - name: Commit and push changes
         run: |
