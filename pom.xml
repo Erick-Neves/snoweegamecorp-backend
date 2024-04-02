@@ -94,14 +94,11 @@
 			<artifactId>maven-surefire-report-plugin</artifactId>
 			<version>3.0.0-M5</version>
 		</dependency>
-		<!-- JSR 303 - Bean Validation API -->
 		<dependency>
 			<groupId>jakarta.validation</groupId>
 			<artifactId>jakarta.validation-api</artifactId>
 			<version>3.0.2</version>
 		</dependency>
-
-		<!-- Bean Validation API Reference Implementation -->
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-validator</artifactId>
