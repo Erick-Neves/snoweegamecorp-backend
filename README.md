@@ -1,4 +1,4 @@
-# Spring-boot Unity Tests
+# Spring-boot Unit Tests
 *Project template to start REST API development with Spring Security and JWT Token.*
 
 > This project was created with the aim of implementing unit tests in the Spring layers (Repository, Service and Controller), the API validates the credentials of a registered user, and when logging in, a Token is generated to be used in the value of the Authentication header, and when filtering a received request, it validates the user's authorizations for that resource.
